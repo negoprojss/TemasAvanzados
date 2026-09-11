@@ -5,6 +5,9 @@ import maquina_snacks_archivos.dominio.Snack;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +24,7 @@ public class ServicioSnacksArchivos implements IServicioSnacks {
         try {
             existe = archivo.exists();
             if (existe){
-               // this.snacks = obtenerSnacks();
+               this.snacks = obtenerSnacks();
             }else {
                 var salida = new PrintWriter(new FileWriter(archivo));
                 salida.close();
@@ -37,12 +40,32 @@ public class ServicioSnacksArchivos implements IServicioSnacks {
 
     }
 
+
+
     private  void cargarSnacksIniciales(){
         this.agregarSnack(new Snack("Papas",70));
         this.agregarSnack(new Snack("Refresco",50));
         this.agregarSnack(new Snack("Sandwich",120));
     }
 
+    private List<Snack> obtenerSnacks() {
+        var snacks = new ArrayList<Snack>();
+        try {
+           List<String> lineas = Files.readAllLines(Paths.get(NOMBRE_ARCHIVO));
+           for (String linea: lineas){
+               String[] lineaSnack = linea.split(",");// parseo separado por coma
+               var idSnack = lineaSnack[0]; // no se usa para el ejemplo
+               var nombre = lineaSnack[1];
+               var precio = Double.parseDouble(lineaSnack[2]);
+               var snack = new Snack(nombre,precio);
+               snacks.add(snack); // agrara la lista de snacks
+           }
+        }catch (Exception e){
+            System.out.println("Error al leer archivo"+e);
+            e.printStackTrace();
+        }
+        return snacks;
+    }
 
     @Override
     public void agregarSnack(Snack snack) {
@@ -50,7 +73,6 @@ public class ServicioSnacksArchivos implements IServicioSnacks {
         this.snacks.add(snack);
         // 2. Guardar en archivo snack em el archivo
         this.agregarSnackArchivo(snack);
-
     }
 
     private  void agregarSnackArchivo(Snack snack){
@@ -69,11 +91,16 @@ public class ServicioSnacksArchivos implements IServicioSnacks {
 
     @Override
     public void mostrarSnacks() {
-
+        System.out.println("---- Snacks en el Inventario -----");
+        var invenarioSnacks ="";
+        for (var snack: this.snacks){
+            invenarioSnacks += snack.toString() + "\n";
+        }
+        System.out.println(invenarioSnacks);
     }
 
     @Override
     public List<Snack> getSnacks() {
-        return List.of();
+        return null;
     }
 }
