@@ -5,7 +5,7 @@ import maquina_snacks_archivos.dominio.Snack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Snacks {
+public class ServicioSnacksLista  implements IServicioSnacks{
     private static final List<Snack> snacks;
 
     // Bloque statico inicializador
@@ -18,20 +18,20 @@ public class Snacks {
         snacks.add(new Snack("caseros",10));
     }
 
-    public static void agregarSnack(Snack snack){
-       snacks.add(snack);
+    public  void agregarSnack(Snack snack){
+        snacks.add(snack);
     }
 
-    public static List<Snack> getSnacks(){
-        return snacks;
-    }
-
-    public static void mostrarSnacks() {
+    public  void mostrarSnacks() {
         var inventarioSnacks = "";
         for (var snack: snacks){
             inventarioSnacks += snack.toString() + "\n";
         }
         System.out.println("--- Snack en el Inventario ---");
         System.out.println(inventarioSnacks);
+    }
+
+    public  List<Snack> getSnacks(){
+        return snacks;
     }
 }
