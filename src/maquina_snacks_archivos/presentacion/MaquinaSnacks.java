@@ -47,7 +47,8 @@ public class MaquinaSnacks {
                 1.Compara snack
                 2.Mostrar ticket
                 3.Agregar Nuevo Snack
-                4.Salir
+                4.Mostrar Inventario
+                5.Salir
                 Elige una opcion:""");
         // Leemos y retornamos la opcion seleccionada
         return Integer.parseInt(consola.nextLine());
@@ -59,12 +60,19 @@ public class MaquinaSnacks {
             case 1 -> comparaSnack(consola,productos,servicioSnacks);
             case 2 -> mostrarTicket(productos);
             case 3 -> agregarSnack(consola,servicioSnacks);
-            case 4 -> {
+            case 4 -> listarInventarioSnacks(consola,servicioSnacks);
+            case 5 -> {
                 System.out.println("**** Regresa Pronto! ****");
                 salir= true;
             }
         }
         return salir;
+    }
+
+    private static void listarInventarioSnacks(Scanner consola,
+                                         IServicioSnacks servicioSnacks){
+
+        servicioSnacks.mostrarSnacks();
     }
 
     private static void comparaSnack(Scanner consola, List<Snack> productos, IServicioSnacks servicioSnacks){
